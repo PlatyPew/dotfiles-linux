@@ -220,8 +220,6 @@ alias ls='exa --icons'
 alias cat='batcat'
 alias ql='quick-look'
 alias n='navi'
-alias p2="${HOME}/pwnpad/p2"
-source "${HOME}/pwnpad/_p2-autocomplete.zsh"
 
 alias clip="base64 | xargs -0 printf '\e]52;c;%s\007'"
 
