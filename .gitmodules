@@ -7,3 +7,6 @@
 [submodule "zsh/.zgenom"]
 	path = zsh/.zgenom
 	url = https://github.com/jandamm/zgenom.git
+[submodule "git/.local/share/gitz"]
+	path = git/.local/share/gitz
+	url = https://github.com/rec/gitz.git
