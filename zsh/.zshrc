@@ -38,7 +38,7 @@ fi
 
 # List directories when directory is changed
 chpwd() {
-    exa -a --icons
+    eza -a --icons always
 }
 
 # Plugins ####################################################
@@ -55,7 +55,6 @@ if ! zgenom saved; then
     zgenom ohmyzsh plugins/docker
     zgenom ohmyzsh plugins/extract
 
-    zgenom load DarrinTisdale/zsh-aliases-exa
     zgenom load hlissner/zsh-autopair
     zgenom load z-shell/F-Sy-H
     zgenom load romkatv/zsh-defer
@@ -121,3 +120,5 @@ zvm_after_init() {
 export PATH=$PATH:/home/$USER/.local/bin
 source $HOME/.zsh_profile
 ############################################################
+
+# vim: ft=bash

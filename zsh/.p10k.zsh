@@ -1,3 +1,5 @@
+ZLE_RPROMPT_INDENT=0
+
 'builtin' 'local' '-a' 'p10k_config_opts'
 [[ ! -o 'aliases'         ]] || p10k_config_opts+=('aliases')
 [[ ! -o 'sh_glob'         ]] || p10k_config_opts+=('sh_glob')
@@ -30,6 +32,7 @@
 
   # Right prompt segments.
   typeset -g POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(
+    my_docker_version
     my_git_version
     my_nvim_version
     my_python_version
@@ -88,6 +91,9 @@
   typeset -g POWERLEVEL9K_PROMPT_CHAR_BACKGROUND=""
   typeset -g POWERLEVEL9K_PROMPT_CHAR_LEFT_SEGMENT_SEPARATOR=''
 
+  typeset -g POWERLEVEL9K_MY_DOCKER_VERSION_SHOW_ON_COMMAND="docker"
+  typeset -g POWERLEVEL9K_MY_DOCKER_VERSION_RIGHT_SEGMENT_SEPARATOR=''
+
   typeset -g POWERLEVEL9K_MY_GIT_VERSION_SHOW_ON_COMMAND="git"
   typeset -g POWERLEVEL9K_MY_GIT_VERSION_RIGHT_SEGMENT_SEPARATOR=''
 
@@ -125,9 +131,9 @@
   typeset -g POWERLEVEL9K_BATTERY_VERBOSE="false"
   typeset -g POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND="grey"
 
-  typeset -g POWERLEVEL9K_LOAD_BACKGROUND="11"
+  typeset -g POWERLEVEL9K_LOAD_BACKGROUND="3"
 
-  typeset -g POWERLEVEL9K_RAM_BACKGROUND="11"
+  typeset -g POWERLEVEL9K_RAM_BACKGROUND="3"
 
   typeset -g POWERLEVEL9K_WIFI_BACKGROUND="6"
 
@@ -138,26 +144,38 @@
     [[ $P9K_TTY == old ]] && p10k display '1'=hide 'empty_line'=show '*/load'=hide '*/ram'=hide '*/wifi'=hide
   }
 
+  typeset -g _docker_version
   typeset -g _git_version
   typeset -g _nvim_version
   typeset -g _python_version
 
+  function _docker_version() {
+    local content
+    [[ -f "/usr/bin/docker" ]] && content="$(docker -v | cut -d ' ' -f 3 | sed 's/.$//')" || content=
+    _docker_version=$content
+  }
+
   function _git_version() {
     local content
-    content="$(git --version | cut -d ' ' -f 3)" || content=
+    [[ -f "/usr/bin/git" ]] && content="$(git --version | cut -d ' ' -f 3)" || content=
     _git_version=$content
   }
 
   function _nvim_version() {
     local content
-    content="$(nvim --version | cut -d 'v' -f 2 | head -n 1)" || content=
+    [[ -f "/usr/bin/nvim" ]] && content="$(nvim --version | cut -d 'v' -f 2 | head -n 1)" || content=
     _nvim_version=$content
   }
 
   function _python_version() {
     local content
-    content="$(python3 -V | cut -d ' ' -f 2)" || content=
+    [[ -f "/usr/bin/python3" ]] && content="$(python3 -V | cut -d ' ' -f 2)" || content=
     _python_version=$content
+  }
+
+  function prompt_my_docker_version() {
+    [ -z $_docker_version ] && zsh-defer -a _docker_version
+    p10k segment -f 4 -b "" -i " " -c $_docker_version -t $_docker_version
   }
 
   function prompt_my_git_version() {
@@ -184,3 +202,5 @@ typeset -g POWERLEVEL9K_CONFIG_FILE=${${(%):-%x}:a}
 
 (( ${#p10k_config_opts} )) && setopt ${p10k_config_opts[@]}
 'builtin' 'unset' 'p10k_config_opts'
+
+# vim: ft=bash
