@@ -1,6 +1,6 @@
 [submodule "neovim/.config/nvim"]
 	path = neovim/.config/nvim
-	url = https://github.com/PlatyPew/neovim-init.lua
+	url = https://github.com/PlatyPew/nvim
 [submodule "tmux/.tmux/plugins/tpm"]
 	path = tmux/.tmux/plugins/tpm
 	url = https://github.com/tmux-plugins/tpm
