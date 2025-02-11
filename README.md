@@ -6,7 +6,10 @@ Dotfiles managed by GNU Stow
 
 Warning: This will override any existing configuration you have
 
-```sh
+```bash
 git clone --depth=1 https://github.com/PlatyPew/dotfiles-linux.git ~/dotfiles && \
-    cd ~/dotfile && stow -v --adopt */ && git restore .
+    cd ~/dotfiles && stow -v --adopt */ && git restore . && \
+    zsh -c "source ~/.zshrc && zgenom update && fast-theme CONFIG:catppuccin-mocha && bat cache --build" && \
+    ~/.tmux/plugins/tpm/scripts/install_plugins.sh && \
+    nvim -c "lua require('lazy').restore({wait = true})" +qa
 ```
