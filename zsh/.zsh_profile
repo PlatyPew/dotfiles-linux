@@ -215,6 +215,15 @@ publish() {
 }
 ############################################################
 
+## Unlock Gnome Keyring ####################################
+unlock-keyring () {
+    printf "Password: "
+    read -rs passwd
+    export $(printf "$passwd" | gnome-keyring-daemon --replace --unlock 2> /dev/null)
+    unset passwd
+}
+############################################################
+
 ## Aliases #################################################
 alias vi="nvim"
 alias :q='exit'
